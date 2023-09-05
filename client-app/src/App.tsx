@@ -3,7 +3,7 @@ import './App.css'
 import axios from 'axios';
 import { Header, List } from 'semantic-ui-react';
 
-
+//Start this to have page then start api to have data. dotnet watch in api and npm start here
 function App() {
   const [activities, setActivities] = useState([]);
 
