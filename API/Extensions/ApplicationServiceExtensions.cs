@@ -1,8 +1,9 @@
-
+using FluentValidation;
 using Application.Activities;
 using Application.Core;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using FluentValidation.AspNetCore;
 
 namespace API.Extensions
 {
@@ -29,6 +30,9 @@ services.AddDbContext<DataContext>(Opt =>
 
 services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(List.Handler).Assembly));
 services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+services.AddFluentValidationAutoValidation();
+services.AddValidatorsFromAssemblyContaining<Create>();
+
 
 return services;
            }
