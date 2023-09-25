@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 // Sometimes dotnet watch doesnt see the new api controller working so reload using dotnet watch --no-hot-reload
 namespace API.Controllers
 {
+  [AllowAnonymous]
   public class ActivitiesController : BaseApiController
   {
     [HttpGet]  //api/activities

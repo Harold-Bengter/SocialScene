@@ -5,6 +5,7 @@ using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
@@ -47,12 +48,14 @@ namespace API.Controllers
         {
             if(await _userManager.Users.AnyAsync(x => x.UserName == registerDto.UserName))
             {
-                return BadRequest("Username already in use");
+                ModelState.AddModelError("username","Username already in use");
+                return ValidationProblem();
             }
 
              if(await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
             {
-                return BadRequest("Email is already in use");
+                ModelState.AddModelError("email","Email already in use");
+                return ValidationProblem();
             }
 
             var user =  new AppUser

@@ -14,15 +14,18 @@ namespace Persistence
                     new AppUser{
                         DisplayName = "Bob",
                         UserName = "BobbyLight",
-                        Email = "Bob@Test.com"},
+                        Email = "Bob@Test.com"
+                        },
                     new AppUser{
                         DisplayName = "Tom",
                         UserName = "TommyT",
-                        Email = "Tom@Test.com"},
+                        Email = "Tom@Test.com"}
+                        ,
                     new AppUser{
                         DisplayName = "Bill",
                         UserName = "BillyBob",
-                        Email = "Bill@Test.com"},
+                        Email = "Bill@Test.com"
+                        },
                 };
 
                 foreach (var user in users)
