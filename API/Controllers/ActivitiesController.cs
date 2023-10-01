@@ -1,10 +1,7 @@
-using System.Drawing;
 using Application.Activities;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-
 
 // Sometimes dotnet watch doesnt see the new api controller working so reload using dotnet watch --no-hot-reload
 namespace API.Controllers
@@ -36,10 +33,8 @@ namespace API.Controllers
     [HttpPut("{id}")]
     public async Task<IActionResult> EditActivity(Guid id, Activity activity)
     {
-      activity.Id = id;
-
+       activity.Id = id;
        return HandleResult(await Mediator.Send(new Edit.Command { Activity = activity }));
-
     }
 
 
@@ -49,7 +44,6 @@ namespace API.Controllers
     public async Task<IActionResult> DeleteActivity(Guid id)
     {
       return HandleResult(await Mediator.Send(new Delete.Command {Id = id }));
-
     }
 
     [HttpPost("{id}/attend")]

@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { Activity } from "../Layout/Models/Activity";
+import { Activity, ActivityFormValues } from "../Layout/Models/Activity";
 import { toast } from "react-toastify";
 import { router } from "../router/Routes";
 import { store } from "../stores/store";
@@ -66,8 +66,7 @@ axios.interceptors.response.use(
 
 const requests = {
   get: <T>(url: string) => axios.get<T>(url).then(responseBody),
-  post: <T>(url: string, body: {}) =>
-    axios.post<T>(url, body).then(responseBody),
+  post: <T>(url: string, body: {}) => axios.post<T>(url, body).then(responseBody),
   put: <T>(url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
   del: <T>(url: string) => axios.delete<T>(url).then(responseBody),
 };
@@ -75,10 +74,10 @@ const requests = {
 const Activities = {
   list: () => requests.get<Activity[]>("/activities"),
   details: (id: string) => requests.get<Activity>(`/activities/${id}`),
-  create: (activity: Activity) => axios.post<void>("/activities", activity),
-  update: (activity: Activity) =>
-    axios.put<void>(`/activities/${activity.id}`, activity),
-  delete: (id: string) => axios.delete<void>(`/activities/${id}`),
+  create: (activity: ActivityFormValues) => requests.post<void>("/activities", activity),
+  update: (activity: ActivityFormValues) => requests.put<void>(`/activities/${activity.id}`, activity),
+  delete: (id: string) => requests.del<void>(`/activities/${id}`),
+  attend: (id: string) => requests.post<void>(`/activities/${id}/attend`, {})
 };
 
 const Account = {
