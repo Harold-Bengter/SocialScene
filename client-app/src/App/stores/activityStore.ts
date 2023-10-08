@@ -81,38 +81,35 @@ export default class ActivityStore {
     this.activityRegistry.set(activity.id, activity);
 }
 
-  private getActivity = (id: string) => {
-    return this.activityRegistry.get(id);
-  };
-
-  setLoadingInitial = (state: boolean) => {
-    this.loadingInitial = state;
-  };
-
-  createActivity = async (activity: ActivityFormValues) => {
-    const user = store.userStore.user;
-    const attendee = new Profile(user!);
-    try {
-      await agent.Activities.create(activity);
-      const newActivity = new Activity(activity);
-      newActivity.hostUsername = user!.username;
-      newActivity.attendees = [attendee];
-      this.setActivity(newActivity);
-      runInAction(() => {
-        this.selectedActivity = newActivity;
-      })
-    } catch (error) {
-      console.log(error);
-      }
+    private getActivity = (id: string) => {
+        return this.activityRegistry.get(id);
     }
- 
+
+    setLoadingInitial = (state: boolean) => {
+        this.loadingInitial = state;
+    }
+
+    createActivity = async (activity: ActivityFormValues) => {
+        const user = store.userStore!.user;
+        const profile = new Profile(user!);
+        try {
+            await agent.Activities.create(activity);
+            const newActivity = new Activity(activity);
+            newActivity.hostUsername = user!.username;
+            newActivity.attendees = [profile];
+            this.setActivity(newActivity);
+            runInAction(() => this.selectedActivity = newActivity);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
   updateActivity = async (activity: ActivityFormValues) => {
     try {
       await agent.Activities.update(activity);
       runInAction(() => {
         if(activity.id){
-          const updatedActivity = {...this.getActivity(activity.id), ...activity}
+          const updatedActivity = {...this.getActivity(activity.id), ...activity};
           this.activityRegistry.set(activity.id, updatedActivity as Activity);
           this.selectedActivity = updatedActivity as Activity;
         }
@@ -148,7 +145,7 @@ export default class ActivityStore {
         if(this.selectedActivity?.isGoing){
             this.selectedActivity.attendees =
             this.selectedActivity.attendees?.filter
-            (a => a.username != user?.username);
+            (a => a.username !== user?.username);
             this.selectedActivity.isGoing = false;
         }else{
           const attendee = new Profile(user!);

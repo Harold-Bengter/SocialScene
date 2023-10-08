@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { router } from "../router/Routes";
 import { store } from "../stores/store";
 import { User, UserFormValues } from "../Layout/Models/user";
+import { Photo, Profile } from "../Layout/Models/profile";
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -12,7 +13,6 @@ const sleep = (delay: number) => {
 };
 
 axios.defaults.baseURL = "http://localhost:5000/api";
-
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
@@ -31,7 +31,7 @@ axios.interceptors.response.use(
     const { data, status, config } = error.response as AxiosResponse;
     switch (status) {
       case 400:
-        if (config.method === "get" && data.errors.hasOwnProperty("id")) {
+        if (config.method === "get" && data.errors.hasOwnProperty('id')) {
           router.navigate("/not-found");
         }
         if (data.errors) {
@@ -68,7 +68,7 @@ const requests = {
   get: <T>(url: string) => axios.get<T>(url).then(responseBody),
   post: <T>(url: string, body: {}) => axios.post<T>(url, body).then(responseBody),
   put: <T>(url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
-  del: <T>(url: string) => axios.delete<T>(url).then(responseBody),
+  del: <T>(url: string) => axios.delete<T>(url).then(responseBody)
 };
 
 const Activities = {
@@ -85,11 +85,25 @@ const Account = {
   login: (user: UserFormValues) => requests.post<User>("/account/login", user),
   register: (user: UserFormValues) =>
     requests.post<User>("/account/register", user),
-};
+}
+
+const Profiles = {
+  get: (username: string) => requests.get<Profile>(`/profiles/${username}`),
+  uploadPhoto: (file: Blob) => {
+    let formData = new FormData();
+    formData.append('File', file);
+    return axios.post<Photo>('photos', formData, { 
+      headers: {'Content-Type': 'multipart/form-data'}
+    })
+  },
+  setMainPhoto: (id: string) => requests.post(`/photos/${id}/setMain`, {}),
+  deletePhoto: (id: string) => requests.del(`/photos/${id}`)
+}
 
 const agent = {
   Activities,
   Account,
-};
+  Profiles
+}
 
 export default agent;
