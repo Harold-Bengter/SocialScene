@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { router } from "../router/Routes";
 import { store } from "../stores/store";
 import { User, UserFormValues } from "../Layout/Models/user";
-import { Photo, Profile } from "../Layout/Models/profile";
+import { Photo, Profile, userActivity } from "../Layout/Models/profile";
 import { PaginationResult } from "../Layout/Models/pagination";
 
 const sleep = (delay: number) => {
@@ -96,18 +96,21 @@ const Account = {
 
 const Profiles = {
   get: (username: string) => requests.get<Profile>(`/profiles/${username}`),
-  uploadPhoto: (file: Blob) => {
-    let formData = new FormData();
-    formData.append('File', file);
-    return axios.post<Photo>('photos', formData, { 
-      headers: {'Content-Type': 'multipart/form-data'}
-    })
+  uploadPhoto: (file: any) => {
+      let formData = new FormData();
+      formData.append('File', file);
+      return axios.post<Photo>('photos', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+      })
   },
-  setMainPhoto: (id: string) => requests.post(`/photos/${id}/setMain`, {}),
-  deletePhoto: (id: string) => requests.del(`/photos/${id}`),
+  setMainPhoto: (id: string) => axios.post(`/photos/${id}/setMain`, {}),
+  deletePhoto: (id: string) => axios.delete(`/photos/${id}`),
+  updateProfile: (profile: Partial<Profile>) => requests.put(`/profiles`, profile),
   updateFollowing: (username: string) => requests.post(`/follow/${username}`, {}),
   listFollowings: (username: string, predicate: string) => requests
-        .get<Profile[]>(`/follow/${username}?predicate=${predicate}`),
+      .get<Profile[]>(`/follow/${username}?predicate=${predicate}`),
+  listActivities: (username: string, predicate: string) =>
+      requests.get<userActivity[]>(`/profiles/${username}/activities?predicate=${predicate}`)
 }
 
 const agent = {
