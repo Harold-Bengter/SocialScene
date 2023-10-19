@@ -5,6 +5,7 @@ import { router } from "../router/Routes";
 import { store } from "../stores/store";
 import { User, UserFormValues } from "../Layout/Models/user";
 import { Photo, Profile } from "../Layout/Models/profile";
+import { PaginationResult } from "../Layout/Models/pagination";
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -25,6 +26,11 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(
   async (response) => {
     await sleep(1000);
+    const pagination = response.headers['pagination'];
+    if (pagination) {
+      response.data = new PaginationResult(response.data, JSON.parse(pagination));
+      return response as AxiosResponse<PaginationResult<unknown>>
+    }
     return response;
   },
   (error: AxiosError) => {
@@ -72,13 +78,14 @@ const requests = {
 };
 
 const Activities = {
-  list: () => requests.get<Activity[]>("/activities"),
+  list: (params: URLSearchParams) => axios.get<PaginationResult<Activity[]>>("/activities", {params})
+        .then(responseBody),
   details: (id: string) => requests.get<Activity>(`/activities/${id}`),
   create: (activity: ActivityFormValues) => requests.post<void>("/activities", activity),
   update: (activity: ActivityFormValues) => requests.put<void>(`/activities/${activity.id}`, activity),
   delete: (id: string) => requests.del<void>(`/activities/${id}`),
   attend: (id: string) => requests.post<void>(`/activities/${id}/attend`, {})
-};
+}
 
 const Account = {
   current: () => requests.get<User>("/account"),
