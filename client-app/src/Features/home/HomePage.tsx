@@ -23,7 +23,7 @@ export default observer(function HomePage() {
           <>
             <Header as="h2" inverted content="Welcome to Open World." />
             <Button as={Link} to="/activities" size="huge" inverted>
-              Go to Activities!
+              Go to events!
             </Button>
           </>
         ) : (

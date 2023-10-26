@@ -36,7 +36,7 @@ export default class ActivityStore {
 
   setPredicate = (predicate: string, value: string | Date) => {
     const resetPredicate = () => {
-      this.predicate.forEach((value, key) => {
+      this.predicate.forEach(( key) => {
         if (key !== 'startDate') this.predicate.delete(key);
       })
     }
@@ -238,6 +238,10 @@ export default class ActivityStore {
     }finally{
       runInAction(() => this.loading = false);
     }
+  }
+
+  clearSelectedActivity  = () => {
+    this.selectedActivity = undefined;
   }
 
   updateAttendeeFollowing = (username: string) => {
