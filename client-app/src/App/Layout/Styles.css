@@ -1,5 +1,5 @@
 body {
-  background-color: bisque !important;
+  background-color: rgba(10, 10, 10, 0.295) !important;
 }
 
 .ui.inverted.top.fixed.menu {
@@ -28,11 +28,11 @@ body {
   align-items: center;
   background: linear-gradient(
       217deg,
-      rgba(255, 0, 0, 0.8),
-      rgba(255, 0, 0, 0) 70.71%
+      rgba(116, 224, 53, 0.8),
+      rgb(71, 140, 218) 70.71%
     ),
-    linear-gradient(127deg, rgba(0, 255, 0, 0.8), rgba(0, 255, 0, 0) 70.71%),
-    linear-gradient(336deg, rgba(0, 0, 255, 0.8), rgba(0, 0, 255, 0) 70.71%) !important;
+    linear-gradient(127deg, rgba(75, 117, 207, 0.8), rgba(0, 255, 0, 0) 70.71%),
+    linear-gradient(336deg, rgba(230, 230, 243, 0.8), rgba(0, 0, 255, 0) 70.71%) !important;
   height: 100vh;
 }
 

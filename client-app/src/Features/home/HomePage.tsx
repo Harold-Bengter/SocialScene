@@ -13,7 +13,7 @@ export default observer(function HomePage() {
         <Header as="h1" inverted>
           <Image
             size="massive"
-            src="/Assets/logo.jpg"
+            src="/Assets/logo.png"
             alt="logo"
             style={{ marginBottom: 12 }}
           />
